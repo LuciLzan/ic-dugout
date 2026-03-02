@@ -1,0 +1,171 @@
+/* =========================
+   Schedule Container
+========================= */
+
+.schedule-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.schedule-title {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* =========================
+   Schedule Card Item
+========================= */
+
+.schedule-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   Left Column (Logo + Record)
+========================= */
+
+.schedule-opponent-logo {
+    display: flex;
+    flex-direction: column;      /* stack logo + record */
+    align-items: center;
+    justify-content: center;
+
+    min-width: 90px;
+}
+
+.schedule-opponent-record {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* =========================
+   Right Column (All Content)
+========================= */
+
+.schedule-game-content {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* Game name */
+.schedule-game-name {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Date / location */
+.schedule-game-dtl {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* =========================
+   Status + Score Section
+========================= */
+
+.schedule-game-details-box {
+    display: flex;
+    justify-content: flex-end;   /* everything to right */
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Base badge */
+.schedule-details-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+
+    color: white;
+    background-color: #444;
+    margin: 0;
+}
+
+/* Upcoming */
+.upcoming-badge {
+    background-color: #6c757d;
+}
+
+/* Live */
+.live-badge {
+    background-color: #d90429;
+    animation: pulse 1.5s infinite;
+}
+
+/* Final */
+.final-badge {
+    font-weight: 700;
+}
+
+/* Score */
+.schedule-game-details-score {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.schedule-game-details-score strong {
+    font-size: 1.2rem;
+}
+
+/* Win/Loss coloring */
+.win {
+    color: #1e7e34;
+}
+
+.loss {
+    color: #c82333;
+}
+
+/* =========================
+   Live Pulse Animation
+========================= */
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+@media (min-width: 768px) {
+
+    .schedule-list-item {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .schedule-game-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .schedule-game-info-box {
+        max-width: 65%;
+    }
+
+    .schedule-game-details-box {
+        min-width: 180px;
+    }
+
+    .schedule-game-details-score strong {
+        font-size: 1.4rem;
+    }
+}

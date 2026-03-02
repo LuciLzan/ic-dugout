@@ -1,0 +1,31 @@
+/* Generated with the assistance of AI */
+
+.page-header {
+    width: 100%;
+    padding: 1rem;
+    background-color: #003591; /*True Blue*/
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Title Styling */
+.page-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+
+
+@media (min-width: 768px) {
+    .page-header {
+        padding: 1.5rem 2rem;
+        text-align: left;
+    }
+
+    .page-header h2 {
+        font-size: 1.75rem;
+    }
+}

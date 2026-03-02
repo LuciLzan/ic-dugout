@@ -1,0 +1,53 @@
+/* Generated stylings with assistance of AI */
+
+.navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    background-color: #003591; /*True Blue*/
+    padding: 0.75rem 0;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+}
+
+/* Prevent content from being hidden behind bottom nav */
+body {
+    padding-bottom: 120px; /* Adjust if nav height changes */
+}
+
+
+@media (min-width: 768px) {
+    .navigation {
+        position: static;
+        width: 100%;
+
+        justify-content: center;
+        gap: 2rem;
+
+        border-top: none;
+        border-bottom: 1px solid #eee;
+        padding: 1rem 0;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+    }
+
+    body {
+        padding-bottom: 0; /* Remove mobile spacing */
+    }
+}
