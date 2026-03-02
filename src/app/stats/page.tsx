@@ -1,3 +1,7 @@
+"use client"
+
+import ScheduleList from "@/components/ScheduleList/ScheduleList";
+
 export default function Scores() {
     return (
         <div>
@@ -5,11 +9,7 @@ export default function Scores() {
 
             <p>Recent game results:</p>
 
-            <ul>
-                <li>IC 5 - Opponent 3 (Final)</li>
-                <li>IC 2 - Opponent 6 (Final)</li>
-                <li>IC vs Opponent (In Progress)</li>
-            </ul>
+            <ScheduleList include={["finished"]}></ScheduleList>
         </div>
     );
 }

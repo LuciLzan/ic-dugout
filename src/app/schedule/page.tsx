@@ -1,3 +1,6 @@
+"use client"
+import ScheduleList from "@/components/ScheduleList/ScheduleList";
+
 export default function Schedule() {
 
 
@@ -5,13 +8,7 @@ export default function Schedule() {
         <div>
             <h1>Schedule</h1>
 
-            <p>Full season schedule will appear here.</p>
-
-            <ul>
-                <li>March 10 - vs Team A</li>
-                <li>March 15 - vs Team B</li>
-                <li>March 20 - vs Team C</li>
-            </ul>
+            <ScheduleList include={["upcoming","live"]}/>
         </div>
     );
 }
