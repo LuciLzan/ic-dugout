@@ -12,7 +12,10 @@ export default function Navigation() {
             <Link className={"nav-link"} href="/schedule">
                 Schedule
             </Link>
-            <Link className={"nav-link"} href="/scores">
+            {
+                //Hardcoded, for now
+            }
+            <Link className={"nav-link"} href="/scores/6572793">
                 Scores
             </Link>
             <Link className={"nav-link"} href="/stats">

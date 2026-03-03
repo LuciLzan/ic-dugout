@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 
-import {GameStats} from "@/app/api/game/route";
+import {GameStats} from "@/app/api/game/[id]/route";
 import {Image} from "next/dist/client/image-component";
 
 import "./Score.css"
@@ -12,18 +12,24 @@ interface Assets {
     awayLogo: string;
 }
 
-export default function Scores() {
+import { use } from 'react'
+
+export default function Scores({
+                                         params,
+                                     }: {
+    params: Promise<{id: number }>
+}) {
+    const { id } = use(params)
     const [game, setGame] = useState<GameStats|null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [assets,setAssets] = useState<Assets>({
-        homeLogo: "https://placehold.co/80",
-        awayLogo: "https://placehold.co/80"
-    });
+
+
+
 
     useEffect(() => {
         async function fetchGames() {
             try {
-                const res = await fetch("/api/game"); // your API route
+                const res = await fetch(`/api/game/${id}`); // your API route
                 if (!res.ok) {
                     throw new Error("Failed to fetch game");
                 }
@@ -48,15 +54,15 @@ export default function Scores() {
             <h2 className={"game-info-dtl"}>{game.date} @ {game.time}</h2>
             <div className={"game-info-main-graphic"}>
                 <div className={"game-team-container"}>
-                    <Image src={assets.awayLogo}  alt={game.away_team.name} width={80} height={80} unoptimized={true} />
-                    <p>{game.home_team.name}</p>
-                    <p className={"game-info-score"}>{game.home_score}</p>
+                    <Image src={game.away_team.logo}  alt={game.away_team.name} width={80} height={80} unoptimized={true} />
+                    <p>{game.away_team.name}</p>
+                    <p className={"game-info-score"}>{game.away_score}</p>
                 </div>
                 <p className={"team-separator"}>-</p>
                 <div className={"game-team-container"}>
-                    <Image src={assets.awayLogo}  alt={game.away_team.name} width={80} height={80} unoptimized={true} />
-                    <p>{game.away_team.name}</p>
-                    <p className={"game-info-score"}>{game.away_score}</p>
+                    <Image src={game.home_team.logo}  alt={game.home_team.name} width={80} height={80} unoptimized={true} />
+                    <p>{game.home_team.name}</p>
+                    <p className={"game-info-score"}>{game.home_score}</p>
                 </div>
             </div>
             <table className="game-info-box-score" border={1} cellPadding={4}>
@@ -95,7 +101,7 @@ export default function Scores() {
                         <ul className={"inning-plays"}>
                             {inningPlays.map((play, idx) => {
                                 const teamName =
-                                    play.team_id === game.home_team.team_id
+                                    play.team_id == game.home_team.team_id //Needed == for some reason, idk why
                                         ? game.home_team.name
                                         : game.away_team.name;
                                 const scoreText =
@@ -104,7 +110,7 @@ export default function Scores() {
                                         : "";
                                 return (
                                     <li key={idx} className={"play-in-inning"}>
-                                        <strong>{teamName}:</strong> {play.text}
+                                        <strong>{teamName}</strong> {play.text}
                                         {scoreText}
                                     </li>
                                 );

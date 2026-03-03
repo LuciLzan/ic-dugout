@@ -1,16 +1,20 @@
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
 
+import * as cheerio from "cheerio";
+
 
 export async function GET() {
-    return NextResponse.json(mockGames);
+    const games = await scrapeSchedule()
+    return NextResponse.json(games);
 }
 
 export interface Game {
     date: string;
     time: string;
+    isConference: boolean;
     home_team: {
         name: string;
-        record: {//Only up to that point
+        record?: {//Only up to that point
             wins: number;
             losses: number;
         }
@@ -18,7 +22,7 @@ export interface Game {
     }
     away_team: {
         name: string;
-        record: {//Only up to that point
+        record?: {//Only up to that point
             wins: number;
             losses: number;
         }
@@ -32,158 +36,130 @@ export interface Game {
     }
 }
 
-//AI Generated
-export const mockGames: Game[] = [
-    {
-        date: "2026-03-01",
-        time: "1:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 5, losses: 1 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Monmouth College",
-            record: { wins: 4, losses: 2 },
-            logo: "https://example.com/logos/monmouth.png",
-        },
-        location: "Jacksonville, IL – Kamp Softball Field",
-        details: {
-            status: "finished",
-            home_score: 7,
-            away_score: 4,
-        },
-    },
-    {
-        date: "2026-03-03",
-        time: "3:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 5, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Grinnell College",
-            record: { wins: 3, losses: 3 },
-            logo: "https://example.com/logos/grinnell.png",
-        },
-        location: "Jacksonville, IL – Kamp Softball Field",
-        details: {
-            status: "finished",
-            home_score: 2,
-            away_score: 5,
-        },
-    },
-    {
-        date: "2026-03-05",
-        time: "12:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 5, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Illinois Wesleyan University",
-            record: { wins: 4, losses: 2 },
-            logo: "https://example.com/logos/iwu.png",
-        },
-        location: "Bloomington, IL – West Campus Field",
-        details: {
-            status: "finished",
-            home_score: 6,
-            away_score: 3,
-        },
-    },
-    {
-        date: "2026-03-08",
-        time: "2:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 6, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Cornell College",
-            record: { wins: 2, losses: 4 },
-            logo: "https://example.com/logos/cornell.png",
-        },
-        location: "Jacksonville, IL – Kamp Softball Field",
-        details: {
-            status: "live",
-            home_score: 3,
-            away_score: 1,
-        },
-    },
-    {
-        date: "2026-03-10",
-        time: "1:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 6, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Wartburg College",
-            record: { wins: 3, losses: 3 },
-            logo: "https://example.com/logos/wartburg.png",
-        },
-        location: "Waverly, IA – Alumni Field",
-        details: {
-            status: "upcoming",
-        },
-    },
-    {
-        date: "2026-03-12",
-        time: "3:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 6, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Knox College",
-            record: { wins: 4, losses: 3 },
-            logo: "https://example.com/logos/knox.png",
-        },
-        location: "Jacksonville, IL – Kamp Softball Field",
-        details: {
-            status: "upcoming",
-        },
-    },
-    {
-        date: "2026-03-15",
-        time: "12:00 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 6, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Beloit College",
-            record: { wins: 3, losses: 4 },
-            logo: "https://example.com/logos/beloit.png",
-        },
-        location: "Beloit, WI – Telfer Field",
-        details: {
-            status: "upcoming",
-        },
-    },
-    {
-        date: "2026-03-18",
-        time: "2:30 PM",
-        home_team: {
-            name: "Illinois College",
-            record: { wins: 6, losses: 2 },
-            logo: "https://example.com/logos/ic.png",
-        },
-        away_team: {
-            name: "Illinois College Alumni",
-            record: { wins: 0, losses: 0 },
-            logo: "https://example.com/logos/alumni.png",
-        },
-        location: "Jacksonville, IL – Kamp Softball Field",
-        details: {
-            status: "upcoming",
-        },
-    },
-];
+
+export interface Game {
+    date: string;
+    time: string;
+    isConference: boolean;
+    home_team: {
+        name: string;
+        record?: { wins: number; losses: number };
+        logo: string;
+    };
+    away_team: {
+        name: string;
+        record?: { wins: number; losses: number };
+        logo: string;
+    };
+    location: string;
+    details: {
+        status: "upcoming" | "live" | "finished";
+        home_score?: number;
+        away_score?: number;
+    };
+}
+
+export async function scrapeSchedule(): Promise<Game[]> {
+    const url = "https://illinoiscollegeathletics.com/sports/softball/schedule/2026";
+
+    //For image later
+    const slugMappingsRaw= await fetch("https://ncaa-api.henrygd.me/schools-index").then(res => res.json()).catch((err) => null);
+    const slugMappings = slugMappingsRaw as {slug:string,name:string,long:string}[];
+
+
+
+
+    const res = await fetch(url);
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    const games: Game[] = [];
+
+    $(".sidearm-schedule-game").each((_, el) => {
+        const gameEl = $(el);
+
+        // DATE & TIME
+        const dateTime = gameEl.find(".sidearm-schedule-game-opponent-date").text().trim()
+            .replace("Noon","12:00 PM")//Strange edge case lol;
+        const date = dateTime.match(/\w\w\w \d+/)?.at(0) || ""
+        const time = dateTime.match(/\d*:..\s../)?.at(0) || ""
+
+
+
+        // LOCATION
+        const location = gameEl.find(".sidearm-schedule-game-location").text().trim();
+
+        // CONFERENCE FLAG – look for MWC marker in text
+        const isConference = gameEl.text().toLowerCase().includes("mwс"); // fuzzy match
+
+
+
+        const gameDate = new Date(`${date} ${time} 2026`);
+
+
+
+
+        const now = new Date();
+
+        let status: "upcoming" | "live" | "finished" = "upcoming";
+        let home_score: number | undefined;
+        let away_score: number | undefined;
+
+
+        if (gameDate < now) {
+            status = "finished";
+            // Only set scores if present
+            const scoreText = gameEl.find(".sidearm-schedule-game-result").text().trim();
+            const scoreMatch = scoreText.match(/(\d+)\s*-\s*(\d+)/);
+            if (scoreMatch) {
+                home_score = parseInt(scoreMatch[1], 10);
+                away_score = parseInt(scoreMatch[2], 10);
+            }
+        } else if (
+            gameDate.toDateString() === now.toDateString()
+        ) {
+            // Could refine with actual game duration
+            status = "live";
+        }
+
+        // Determine home/away by text content
+        const opponentText = gameEl.find(".sidearm-schedule-game-opponent-name").text().trim();
+        const homeIsIC = gameEl.find(".sidearm-schedule-game-home-away").text().toLowerCase().includes("home");
+
+        // Get logo image (first <img> in block)
+
+
+        let logoUrl = "https://placehold.co/80"
+        if(slugMappings) {
+            const mapping = slugMappings.find(entry => (opponentText.includes(entry.long))||opponentText.includes(entry.name))
+            if(mapping) {
+                logoUrl = `https://ncaa-api.henrygd.me/logo/${mapping.slug}.svg`
+            }
+        }
+
+        const home_team = {
+            name: homeIsIC ? "Illinois College" : opponentText,
+            logo: homeIsIC ? "/path-to-IC-logo.png" : logoUrl,
+        };
+        const away_team = {
+            name: homeIsIC ? opponentText : "Illinois College",
+            logo: homeIsIC ? logoUrl : "/path-to-IC-logo.png",
+        };
+
+        games.push({
+            date,
+            time,
+            isConference,
+            home_team,
+            away_team,
+            location,
+            details: {
+                status,
+                home_score: status !== "upcoming" ? home_score : undefined,
+                away_score: status !== "upcoming" ? away_score : undefined,
+            },
+        });
+    });
+
+    return games;
+}

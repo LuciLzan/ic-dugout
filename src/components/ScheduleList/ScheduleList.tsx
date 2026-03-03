@@ -39,12 +39,12 @@ export default function ScheduleList(props:{include:string[]}) {
         fetchGames();
     }, []);
 
-    if (isLoading) return <p>Loading schedule...</p>;
-    if (!games || games.length === 0) return <p>No games available.</p>;
+    if (isLoading) return <div className={"schedule-list"}><p>Loading schedule...</p></div>;
+    if (!games || games.length === 0) return <div className={"schedule-list"}><p>No games available.</p></div>;
 
     return (
         <div className={"schedule-list"}>
-
+            <h2>Games</h2>
             <ul className={"schedule-list"}>
                 {games.map((game, idx) => {
                     const isHome = game.home_team.name == "Illinois College"
@@ -52,8 +52,11 @@ export default function ScheduleList(props:{include:string[]}) {
                     return(
                     <li className={"schedule-list-item"} key={idx}>
                         <div className={"schedule-opponent-logo"}>
-                            <Image src={assets.opponentLogo}  alt={game.away_team.name} width={80} height={80} unoptimized={true} />
-                            <p className={"schedule-opponent-record"}>{game.away_team.record.wins}-{game.away_team.record.losses}</p>
+                            {isHome?
+                                <Image src={game.away_team.logo}  alt={game.away_team.name} width={80} height={80} unoptimized={true} />:
+                                <Image src={game.home_team.logo}  alt={game.home_team.name} width={80} height={80} unoptimized={true} />
+                            }
+
                         </div>
                         <div className={"schedule-game-content"}>
                             <div className={"schedule-game-info-box"} >
