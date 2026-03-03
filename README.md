@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IC Dugout
 
-## Getting Started
+IC Dugout is a central place for all Lady Blue related content. See upcoming games, view current scores, and look at stats in one centeralized place!
 
-First, run the development server:
+## Technologies Used
+Typescript (Typechecking)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+NextJS (Front and Backend Server)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Jest (Testing)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Vercel (Deployment)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available routes and features
+### / (home)
+This is a home page, complete with an action shot and a link to the schedule
+### /schedule
+A live updating schedule, showing all games coming up (or live!) on the lady blues schedule
+### /score
+A (WIP) page that displays individual game details, allowing users to look at the details of any game
+### /stats
+A page which displays the record and stats of the lady blues. Although currently lacking on stats, it has all completed games present
 
-## Learn More
+## API documentation and dependencies
+### NCAA API
+This application uses a community managed NCAA Api, documented here https://ncaa-api.henrygd.me/openapi
+### Webscraper
+Currently, the website is scraping illinoiscollegeatheletics.com for schedule information due to shortcomings on the other API. It is unknown of this is a permanent solution or not
 
-To learn more about Next.js, take a look at the following resources:
+## Instructions
+Accessing this application is simple! Just visit the link below!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+https://vercel.com/lukes-projects-28faa35c/ic-dugout/ALtM6S5F4p4gPT6Hda3a1TKduUQS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Known Issues
+The following are known issues that I plan on addressing for the final project
+- The “Score” page is hardcoded to only one score, this is an issue with integrating the webscraper and the NCAA Api
+- The games on schedule and stats are not clickable for the same reason
+- The hero looks a little wonky on desktop
+- Tests for frontend don’t work with current library, I am looking into how to integrate both frontend and backend testing
+## Future plans
+- More stats on stats page
+- Live updates on scores page, if possible
+- Improved stylings, particularly with navigation
