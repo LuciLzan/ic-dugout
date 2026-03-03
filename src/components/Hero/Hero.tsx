@@ -10,8 +10,8 @@ import wideActionShot from "../../../public/action-shot-1600x800.png"
 import "./Hero.css"
 
 export default function Hero() {
+    const actionShot = tallActionShot;
 
-    const actionShot = window.innerWidth > 1000 ? wideActionShot : tallActionShot;
 
     return (
         <div className="hero">
