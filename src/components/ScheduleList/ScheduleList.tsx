@@ -5,33 +5,30 @@ import {Image} from "next/dist/client/image-component";
 import "./ScheduleList.css"
 
 
-interface Assets {
-    opponentLogo: string;
-}
 
-export default function ScheduleList(props:{include:string[]}) {
+export default function ScheduleList(props:{display:string[]}) {
     const [games, setGames] = useState<Game[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [assets,setAssets] = useState<Assets>({
-        opponentLogo: "https://placehold.co/80",
-    });
+    const [isError, setIsError] = useState<boolean>(false);
+
 
     useEffect(() => {
         async function fetchGames() {
             try {
                 const res = await fetch("/api/schedule"); // your API route
                 if (!res.ok) {
-                    throw new Error("Failed to fetch games");
+                    setIsError(true);
+                    return;
                 }
                 const data: Game[] = await res.json();
 
                 const filteredData = data.filter((value) => {
-                    return props.include.indexOf(value.details.status) != -1
+                    return props.display.indexOf(value.details.status) != -1
                 })
 
                 setGames(filteredData);
             } catch (err) {
-                console.error(err);
+                setIsError(true)
             } finally {
                 setIsLoading(false);
             }
@@ -39,17 +36,16 @@ export default function ScheduleList(props:{include:string[]}) {
         fetchGames();
     }, []);
 
-    if (isLoading) return <div className={"schedule-list"}><p>Loading schedule...</p></div>;
-    if (!games || games.length === 0) return <div className={"schedule-list"}><p>No games available.</p></div>;
+    let content = <></>
 
-    return (
-        <div className={"schedule-list"}>
-            <h2>Games</h2>
-            <ul className={"schedule-list"}>
-                {games.map((game, idx) => {
-                    const isHome = game.home_team.name == "Illinois College"
-                    const isWin = (game.details.home_score != undefined && game.details.away_score != undefined)?(isHome?game.details.home_score-game.details.away_score>0:game.details.home_score-game.details.away_score<0):false;
-                    return(
+    if (isLoading) content = <><p>Loading schedule...</p></>
+    else if (isError) content = <><p>Error loading games</p></>
+    else if (!games || games.length === 0) content = <><p>No games available.</p></>
+    else content = (<>
+            {games.map((game, idx) => {
+                const isHome = game.home_team.name == "Illinois College"
+                const isWin = (game.details.home_score != undefined && game.details.away_score != undefined)?(isHome?game.details.home_score-game.details.away_score>0:game.details.home_score-game.details.away_score<0):false;
+                return(
                     <li className={"schedule-list-item"} key={idx}>
                         <div className={"schedule-opponent-logo"}>
                             {isHome?
@@ -95,6 +91,12 @@ export default function ScheduleList(props:{include:string[]}) {
                         <hr />
                     </li>
                 )})}
+        </>)
+    return (
+        <div>
+            <h2 className={"schedule-title"}>Games</h2>
+            <ul className={"schedule-list"}>
+                {content}
             </ul>
         </div>
     );

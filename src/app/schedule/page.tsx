@@ -6,7 +6,7 @@ export default function Schedule() {
 
     return (
         <div>
-            <ScheduleList include={["upcoming","live"]}/>
+            <ScheduleList display={["upcoming","live"]}/>
         </div>
     );
 }
