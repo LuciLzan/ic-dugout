@@ -37,7 +37,6 @@ The following are known issues that I plan on addressing for the final project
 - The “Score” page is hardcoded to only one score, this is an issue with integrating the webscraper and the NCAA Api
 - The games on schedule and stats are not clickable for the same reason
 - The hero looks a little wonky on desktop
-- Tests for frontend don’t work with current library, I am looking into how to integrate both frontend and backend testing
 ## Future plans
 - More stats on stats page
 - Live updates on scores page, if possible
