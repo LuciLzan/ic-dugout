@@ -1,4 +1,4 @@
-import leven, {closestMatch} from 'leven';
+import leven from "leven"
 
 
 export async function getSchoolLogo(name:string):Promise<string> {
@@ -120,9 +120,10 @@ export async function findSchoolRepo(name:string):Promise<{slug:string,name:stri
         if(school.slug){map[school.slug]=i;strings.push(school.slug)}
     }
 
-    let s = closestMatch(name,strings)
+    let s = strings.sort((a,b) => leven(name,a) - leven(name,b))[0];
+    if(!s) return null
 
-    return slugMappings[map[s as string] as number]
+    return slugMappings[map[s.toString()] as number]
 }
 
 

@@ -10,6 +10,10 @@ const config: Config = {
         "\\.(png|jpg|jpeg|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.ts"
     },
     setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
+
+    transformIgnorePatterns: [
+        'node_modules/(?!(leven)/)'
+    ]
 };
 
 export default config;
