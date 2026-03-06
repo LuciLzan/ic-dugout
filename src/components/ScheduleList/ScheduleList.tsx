@@ -1,8 +1,9 @@
-import {Game} from "@/app/api/schedule/route";
+
 import {useEffect, useState} from "react";
 import {Image} from "next/dist/client/image-component";
 
 import "./ScheduleList.css"
+import {Game} from "@/services/IllinoisCollegeAPI";
 
 
 
