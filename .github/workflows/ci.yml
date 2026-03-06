@@ -4,9 +4,9 @@ name: CI
 # Trigger on pushes to main/develop and PRs to main
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 # Define the test job
 jobs:
