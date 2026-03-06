@@ -1,0 +1,34 @@
+# Workflow name shown in Actions tab
+name: CI
+
+# Trigger on pushes to main/develop and PRs to main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Define the test job
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Get the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install packages
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run the test suite
+      - name: Run tests
+        run: npm test
