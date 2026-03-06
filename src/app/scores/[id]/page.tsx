@@ -17,9 +17,9 @@ import { use } from 'react'
 export default function Scores({
                                          params,
                                      }: {
-    params: Promise<{id: number }>
+    params: {id: number }
 }) {
-    const { id } = use(params)
+    const id = params.id;
     const [game, setGame] = useState<GameStats|null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
@@ -29,6 +29,7 @@ export default function Scores({
 
     useEffect(() => {
         async function fetchGames() {
+
             try {
                 const res = await fetch(`/api/game/${id}`); // your API route
                 if (!res.ok) {
@@ -128,6 +129,7 @@ export default function Scores({
     }
 
     return (
+
     <div className={"game-info-page"}>
         <h2>Game Stats</h2>
         {content}

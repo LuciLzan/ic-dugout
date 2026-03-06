@@ -1,4 +1,5 @@
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
+import {getSchoolLogo} from "@/services/NCAAApi";
 
 
 export async function GET(
@@ -131,18 +132,8 @@ export async function getGameInformation(gameID:number):Promise<GameStats|undefi
     }
 
 
-    let homeLogo = "https://placehold.co/80"
-    let awayLogo = "https://placehold.co/80"
-    if(slugMappings) {
-        const mapping = slugMappings.find(entry => (homeTeam.nameFull.includes(entry.long)))
-        if(mapping) {
-            homeLogo = `https://ncaa-api.henrygd.me/logo/${mapping.slug}.svg`
-        }
-        const mapping2 = slugMappings.find(entry => (awayTeam.nameFull.includes(entry.long)))
-        if(mapping2) {
-            awayLogo = `https://ncaa-api.henrygd.me/logo/${mapping2.slug}.svg`
-        }
-    }
+    let homeLogo = await getSchoolLogo(homeTeam.nameFull)
+    let awayLogo = await getSchoolLogo(awayTeam.nameFull)
 
 
     return {
