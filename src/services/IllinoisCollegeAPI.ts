@@ -90,7 +90,7 @@ export async function scrapeSchedule(): Promise<Game[]> {
 
         // Determine home/away by text content
         const opponentText = gameEl.find(".sidearm-schedule-game-opponent-name").text().trim();
-        const homeIsIC = gameEl.find(".sidearm-schedule-game-home-away").text().toLowerCase().includes("home");
+        const homeIsIC = gameEl.find(".sidearm-schedule-game-location").text().toLowerCase().includes("jacksonville, il");
 
 
 
