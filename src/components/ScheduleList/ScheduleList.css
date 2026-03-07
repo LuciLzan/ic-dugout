@@ -45,6 +45,84 @@
     background-color: #ccc;
 }
 
+/* container table */
+.stats-table {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* header container */
+.schedule-stats-header-container {
+    background: #1e293b;
+    color: white;
+}
+
+/* header row */
+.schedule-stats-header-row {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* header cells */
+.schedule-stats-header-entry {
+    padding: 12px 10px;
+    font-weight: 600;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.schedule-stats-header-entry:last-child {
+    border-right: none;
+}
+
+/* body container */
+.schedule-stats-body-container {
+    background: #f8fafc;
+}
+
+/* body row */
+.schedule-stats-body-row {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* body cells */
+.schedule-stats-body-data {
+    padding: 18px 10px;
+    border-right: 1px solid #e2e8f0;
+}
+
+.schedule-stats-body-data:last-child {
+    border-right: none;
+}
+
+/* performance colors */
+.positive {
+    color: #16a34a;
+}
+
+.negative {
+    color: #dc2626;
+}
+
+.neutral {
+    color: #475569;
+}
+
+/* subtle hover effect */
+.stats-table:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
 /* =========================
    Left Column (Logo + Record)
 ========================= */
