@@ -13,13 +13,11 @@ interface Assets {
 }
 
 import { use } from 'react'
+import {useParams} from "next/dist/client/components/navigation";
 
-export default function Scores({
-                                         params,
-                                     }: {
-    params: {id: number }
-}) {
-    const id = params.id;
+export default function Scores() {
+    const params = useParams<{ id:string }>()
+    const id = params?.id || "0";
     const [game, setGame] = useState<GameStats|null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);

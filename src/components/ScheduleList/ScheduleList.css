@@ -40,6 +40,10 @@
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+.clickable:hover {
+    cursor: pointer;
+    background-color: #ccc;
+}
 
 /* =========================
    Left Column (Logo + Record)

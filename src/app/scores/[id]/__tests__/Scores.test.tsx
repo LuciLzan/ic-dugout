@@ -18,7 +18,7 @@ global.fetch = jest.fn(() =>
 
 test("Test page",async () => {
     await act(async () => {
-        render(<Scores params={Promise.resolve({id:0})}/>);
+        render(<Scores/>);
     })
 
     await waitFor(() => {
