@@ -13,6 +13,14 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
 
+    interface Filter {
+        before?: string
+        after?: string
+        location?: "home"|"away"
+    }
+
+    const [filter,setFilter] = useState<Filter>({});
+
     interface Stats {
         home_wins: number;
         home_losses: number;
@@ -41,6 +49,18 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                 const data: Game[] = await res.json();
 
                 const filteredData = data.filter((value) => {
+
+                    if(filter.before && new Date(value.unix_date).getTime() > new Date(filter.before).getTime()) {
+                        return false
+                    }
+                    if(filter.after && new Date(value.unix_date).getTime() < new Date(filter.after).getTime()) {
+                        return false
+                    }
+                    if(filter.location && ((filter.location == "home" && value.home_team.name != "Illinois College")||(filter.location != "home" && value.home_team.name == "Illinois College"))) {
+                        return false
+                    }
+
+
                     return props.display.indexOf(value.details.status) != -1
                 })
 
@@ -78,7 +98,7 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
             }
         }
         fetchGames();
-    }, []);
+    }, [filter]);
 
     let content = <></>
     let statsBoard = <></>
@@ -103,6 +123,11 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                                                height={80} unoptimized={true}/> :
                                         <Image src={game.home_team.logo} alt={game.home_team.name} width={80}
                                                height={80} unoptimized={true}/>
+                                    }
+                                    {
+                                        isHome ?
+                                            <div className={"final-badge"}>Home</div>:
+                                            <div className={"final-badge"}>Away</div>
                                     }
 
                                 </div>
@@ -149,6 +174,11 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                                                height={80} unoptimized={true}/> :
                                         <Image src={game.home_team.logo} alt={game.home_team.name} width={80}
                                                height={80} unoptimized={true}/>
+                                    }
+                                    {
+                                        isHome ?
+                                            <div className={"final-badge"}>Home</div>:
+                                            <div className={"final-badge"}>Away</div>
                                     }
 
                                 </div>
@@ -229,6 +259,57 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                 <table className={"stats-table"}>
                     {statsBoard}
                 </table>}
+            <div className="filter-controls">
+                <div className="filter-field">
+                    <label htmlFor="after">After</label>
+                    <input
+                        id="after"
+                        type="date"
+                        value={filter.after ?? ""}
+                        onChange={(e) =>
+                            setFilter((prev) => ({
+                                ...prev,
+                                after: e.target.value || undefined,
+                            }))
+                        }
+                    />
+                </div>
+                <div className="filter-field">
+                    <label htmlFor="before">Before</label>
+                    <input
+                        id="before"
+                        type="date"
+                        value={filter.before ?? ""}
+                        onChange={(e) =>
+                            setFilter((prev) => ({
+                                ...prev,
+                                before: e.target.value || undefined,
+                            }))
+                        }
+                    />
+                </div>
+                <div className="filter-field">
+                    <label htmlFor="location">Location</label>
+                    <select
+                        id="location"
+                        value={filter.location ?? ""}
+                        onChange={(e) =>
+                            setFilter((prev) => ({
+                                ...prev,
+                                location: e.target.value === "" ? undefined : (e.target.value as "home" | "away"),
+                            }))
+                        }
+                    >
+                        <option value="">All</option>
+                        <option value="home">Home</option>
+                        <option value="away">Away</option>
+                    </select>
+                </div>
+                <button className={"clear-button"} onClick={() => setFilter({})}>
+                    Clear
+                </button>
+
+            </div>
             <ul className={"schedule-list"}>
                 {content}
             </ul>

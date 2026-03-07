@@ -218,6 +218,86 @@
     font-size: 1.2rem;
 }
 
+/* main container */
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 14px 18px;
+    margin: 20px auto;
+    max-width: 700px;
+
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* each filter field */
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+/* labels */
+.filter-field label {
+    font-weight: 600;
+    color: #334155;
+}
+
+/* inputs and dropdown */
+.filter-field input,
+.filter-field select {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: white;
+
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* focus effect */
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* clear button */
+.clear-button {
+    margin-top: 18px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    background: #ef4444;
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    align-self: flex-end;
+
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+/* hover effects */
+.clear-button:hover {
+    background: #dc2626;
+}
+
+.clear-button:active {
+    transform: scale(0.96);
+}
+
+
 /* Win/Loss coloring */
 .win {
     color: #1e7e34;
@@ -260,4 +340,6 @@
     .schedule-game-details-score strong {
         font-size: 1.4rem;
     }
+
+
 }
