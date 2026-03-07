@@ -12,5 +12,5 @@ import Home from "@/app/page";
 test("Test for hero", () => {
     render(<Home/>);
 
-    expect(screen.getByText("Welcome to the IC Dugout, Home of the Lady Blues!")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to the IC Dugout!")).toBeInTheDocument();
 });

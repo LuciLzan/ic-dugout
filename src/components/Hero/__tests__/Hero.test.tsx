@@ -10,11 +10,11 @@ import ScheduleList from "@/components/ScheduleList/ScheduleList";
 test("Displays Hero title", () => {
     render(<Hero  />);
 
-    expect(screen.getByText("Welcome to the IC Dugout, Home of the Lady Blues!")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to the IC Dugout!")).toBeInTheDocument();
 });
 
 test("Displays Hero Links", () => {
     render(<Hero  />);
 
-    expect(screen.getByText("Upcoming Games")).toBeInTheDocument();
+    expect(screen.getByText("View Schedule")).toBeInTheDocument();
 });
