@@ -4,6 +4,7 @@ import {getGameIDByName, getSchoolLogo} from "@/services/NCAAApi";
 export interface Game {
     date: string;
     unix_date:Date
+    opponent: string;
     id: number;
     time: string;
     isConference: boolean;
@@ -59,8 +60,7 @@ export async function scrapeSchedule(): Promise<Game[]> {
         const isConference = gameEl.text().toLowerCase().includes("mwс"); // fuzzy match
 
 
-
-        const gameDate = new Date(`${date} ${time} 2026`);
+        const gameDate = new Date(`${date} 2026 ${time}`);
 
 
 
@@ -104,6 +104,7 @@ export async function scrapeSchedule(): Promise<Game[]> {
 
         games.push({
             unix_date: gameDate,
+            opponent: opponentText,
             date,
             time,
             isConference,
@@ -119,7 +120,7 @@ export async function scrapeSchedule(): Promise<Game[]> {
     });
 
     for (const game of games as Game[]) {
-        game.id = await getGameIDByName(game.unix_date)
+        game.id = await getGameIDByName(game.opponent,game.unix_date)
         game.home_team.logo = await getSchoolLogo(game.home_team.name)
         game.away_team.logo = await getSchoolLogo(game.away_team.name)
 

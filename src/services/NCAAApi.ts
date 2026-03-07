@@ -21,7 +21,6 @@ export interface Game {
 
     startDate: string;
     startTime: string;
-    startTimeEpoch: string;
 
     gameState: string;
     finalMessage: string;
@@ -35,7 +34,7 @@ export interface Game {
     contestName: string;
     network: string;
     videoState: string;
-
+    startTimeEpoch:string
     liveVideoEnabled: boolean;
 
     away: {
@@ -75,24 +74,71 @@ export interface Game {
     };
 }
 
+
 async function getGamesByDate(timestamp:Date) {
     "use cache"
-    return await fetch(`https://ncaa-api.henrygd.me/scoreboard/softball/d3/2026/${timestamp.getMonth()}/${timestamp.getDay()}/mwc`).then(res => res.json()).catch(err => null);
+    const str = `https://ncaa-api.henrygd.me/scoreboard/softball/d3/2026/${(timestamp.getMonth()+1).toString().padStart(2,"0")}/${(timestamp.getDay()+1).toString().padStart(2,"0")}/mwc`
+    
+    return await fetch(str).then(res => res.json()).catch(err => null);
 }
 
-export async function getGameIDByName(timestamp:Date):Promise<number> {
+
+
+
+export async function getGameIDByName(opponent:string, timestamp:Date):Promise<number> {
     "use cache"
     let allGames = await getGamesByDate(timestamp)
     if(!allGames){return 0}
 
+    const candidates:string[] = []
+
+    let opponentsToID:any = {} as any
+
+    (allGames.games as ({game: Game,startTimeEpoch: string;}[])).forEach(game=> {
 
 
-    let game = (allGames as {games: Game[]}).games.find(game=> {
-        if(Number.parseInt(game.startTimeEpoch,10) != Math.floor(timestamp.getTime()/1000)){return false}
-        if(game.home.names.seo=="illinois-col" || game.away.names.seo=="illinois-col"){return true}
+
+        if(game.game.home.names.seo=="illinois-col"){
+            if(game.game.away.names.full && opponentsToID[game.game.away.names.full] === undefined) {
+                candidates.push(game.game.away.names.full);
+                opponentsToID[game.game.away.names.full] = game.game.gameID
+            }
+            if(game.game.away.names.seo && opponentsToID[game.game.away.names.seo] === undefined) {
+                candidates.push(game.game.away.names.seo);
+                opponentsToID[game.game.away.names.seo] = game.game.gameID
+            }
+            if(game.game.away.names.short && opponentsToID[game.game.away.names.short] === undefined) {
+                candidates.push(game.game.away.names.short);
+                opponentsToID[game.game.away.names.short] = game.game.gameID
+            }
+            if(game.game.away.names.char6 && opponentsToID[game.game.away.names.char6] === undefined) {
+                candidates.push(game.game.away.names.char6);
+                opponentsToID[game.game.away.names.char6] = game.game.gameID
+            }
+        }else if(game.game.away.names.seo=="illinois-col") {
+            if(game.game.home.names.full && opponentsToID[game.game.home.names.full] === undefined) {
+                candidates.push(game.game.home.names.full);
+                opponentsToID[game.game.home.names.full] = game.game.gameID
+            }
+            if(game.game.home.names.seo && opponentsToID[game.game.home.names.seo] === undefined) {
+                candidates.push(game.game.home.names.seo);
+                opponentsToID[game.game.home.names.seo] = game.game.gameID
+            }
+            if(game.game.home.names.short && opponentsToID[game.game.home.names.short] === undefined) {
+                candidates.push(game.game.home.names.short);
+                opponentsToID[game.game.home.names.short] = game.game.gameID
+            }
+            if(game.game.home.names.char6 && opponentsToID[game.game.home.names.char6] === undefined) {
+                candidates.push(game.game.home.names.char6);
+                opponentsToID[game.game.home.names.char6] = game.game.gameID
+            }
+        }
+
+
+
     });
 
-    return game?Number.parseInt(game.gameID,10):0;
+    return opponentsToID[candidates.sort((a,b) => leven(a,opponent)-leven(b,opponent))[0]]
 
 }
 

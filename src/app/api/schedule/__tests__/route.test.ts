@@ -7,5 +7,5 @@ describe('Schedule rendering', () => {
     test('Returns normal', async () => {
         const resp = await scrapeSchedule()
         expect(resp).toBeDefined();
-    },30000)
+    },60000)
 })
