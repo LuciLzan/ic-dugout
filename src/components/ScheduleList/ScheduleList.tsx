@@ -48,6 +48,7 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                 }
                 const data: Game[] = await res.json();
 
+
                 const filteredData = data.filter((value) => {
 
                     if(filter.before && new Date(value.unix_date).getTime() > new Date(filter.before).getTime()) {
@@ -64,9 +65,6 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                     return props.display.indexOf(value.details.status) != -1
                 })
 
-                if(props.order === "reversed") {
-                    filteredData.reverse();
-                }
 
                 let temp_stats = {
                     home_wins: 0,
@@ -75,7 +73,6 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                     away_losses: 0,
                     current_streak: 0,
                 }
-
                 filteredData.forEach(game=> {
                     const isHome = game.home_team.name == "Illinois College"
                     const isWin = (game.details.home_score != undefined && game.details.away_score != undefined) ? (isHome ? game.details.home_score - game.details.away_score > 0 : game.details.home_score - game.details.away_score < 0) : false;
@@ -88,7 +85,12 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                     }
                 })
 
+                if(props.order === "reversed") {
+                    filteredData.reverse();
+                }
                 setStats(temp_stats)
+
+
 
                 setGames(filteredData);
             } catch (err) {
@@ -111,8 +113,8 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
     else {
         content = (<>
             {games.map((game, idx) => {
-                const isHome = game.home_team.name == "Illinois College"
-                const isWin = (game.details.home_score != undefined && game.details.away_score != undefined) ? (isHome ? game.details.home_score - game.details.away_score > 0 : game.details.home_score - game.details.away_score < 0) : false;
+                const isHome = game.home_team.name ==  "Illinois College"
+                const isWin = (game.details.home_score != undefined && game.details.away_score != undefined) ? (isHome ? game.details.home_score - game.details.away_score > 0 : game.details.away_score - game.details.home_score > 0) : false;
                 return (
                     <li key={idx}>
                         {new Date(game.unix_date).getTime() < Date.now() && game.id !== undefined ? (
@@ -145,7 +147,7 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                                             <>
                                                 <p className={"schedule-details-badge final-badge"}>Final</p>
                                                 <p className={`schedule-game-details-score ${isWin ? "win" : "loss"}`}>
-                                                    <strong>{game.details.home_score}-{game.details.away_score}</strong> {isWin ? "W" : "L"}
+                                                    <strong>{game.details.away_score}-{game.details.home_score}</strong> {isWin ? "W" : "L"}
                                                 </p>
                                             </>
                                         }
@@ -225,9 +227,9 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
             })}
         </>)
 
-        const overall_wl = (stats.home_wins+stats.away_wins)/(stats.home_losses+stats.away_losses)
-        const home_wl = (stats.home_wins)/(stats.home_losses)
-        const away_wl = (stats.away_wins)/(stats.away_losses)
+        const overall_wl = (stats.home_wins+stats.away_wins)/((stats.home_losses+stats.away_losses)+(stats.home_wins+stats.away_wins))
+        const home_wl = (stats.home_wins)/(stats.home_wins+stats.home_losses)
+        const away_wl = (stats.away_wins)/(stats.away_wins+stats.away_losses)
 
 
 
@@ -243,9 +245,9 @@ export default function ScheduleList(props:{display:string[],order?:string,showS
                 </thead>
                 <tbody className={"schedule-stats-body-container"}>
                     <tr className={"schedule-stats-body-row"}>
-                        <td className={`schedule-stats-body-data ${overall_wl > 0.66?"positive":overall_wl<0.5?"negative":"neutral"}`}>{Number.isNaN(overall_wl)?"N/A":overall_wl}</td>
-                        <td className={`schedule-stats-body-data ${home_wl > 0.66?"positive":home_wl<0.5?"negative":"neutral"}`}>{Number.isNaN(home_wl)?"N/A":home_wl}</td>
-                        <td className={`schedule-stats-body-data ${away_wl > 0.66 ? "positive" : away_wl < 0.5 ? "negative" : "neutral"}`}>{Number.isNaN(away_wl)?"N/A":away_wl}</td>
+                        <td className={`schedule-stats-body-data ${overall_wl > 0.66?"positive":overall_wl<0.5?"negative":"neutral"}`}>{Number.isNaN(overall_wl)?"N/A":(overall_wl*100).toFixed(1)+"%"}</td>
+                        <td className={`schedule-stats-body-data ${home_wl > 0.66?"positive":home_wl<0.5?"negative":"neutral"}`}>{Number.isNaN(home_wl)?"N/A":(home_wl*100).toFixed(1)+"%"}</td>
+                        <td className={`schedule-stats-body-data ${away_wl > 0.66 ? "positive" : away_wl < 0.5 ? "negative" : "neutral"}`}>{Number.isNaN(away_wl)?"N/A":(away_wl*100).toFixed(1)+"%"}</td>
                         <td className={`schedule-stats-body-data ${stats.current_streak>0?"positive":stats.current_streak<0?"negative":"neutral"}`}>{stats.current_streak == 0? "N/A":((stats.current_streak>0?"W":"L")+Math.abs(stats.current_streak))}</td>
                     </tr>
                 </tbody>

@@ -78,8 +78,8 @@ export async function scrapeSchedule(): Promise<Game[]> {
             const scoreText = gameEl.find(".sidearm-schedule-game-result").text().trim();
             const scoreMatch = scoreText.match(/(\d+)\s*-\s*(\d+)/);
             if (scoreMatch) {
-                home_score = parseInt(scoreMatch[1], 10);
-                away_score = parseInt(scoreMatch[2], 10);
+                home_score = parseInt(scoreMatch[2], 10);
+                away_score = parseInt(scoreMatch[1], 10);
             }
         } else if (
             gameDate.toDateString() === now.toDateString()
