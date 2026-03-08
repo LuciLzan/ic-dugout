@@ -24,8 +24,9 @@ export default function Hero() {
                 priority
             />
             <div className="hero-content">
-                <h1 className="hero-title">Welcome to the IC Dugout, Home of the Lady Blues!</h1>
-                <Link className="hero-link" href="/schedule">Upcoming Games</Link>
+                <h1 className="hero-title">Welcome to the IC Dugout!</h1>
+                <p className="hero-subtitle">Schedules, scores, and stats for the IC Lady Blues</p>
+                <Link className="hero-link" href="/schedule">View Schedule</Link>
             </div>
         </div>
     );
