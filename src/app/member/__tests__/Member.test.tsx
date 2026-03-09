@@ -2,11 +2,12 @@
  * @jest-environment jsdom
  */
 
-import Header from "@/components/Header/Header";
+
 
 
 import { render, screen } from "@testing-library/react";
 
+import MemberPage from "@/app/member/MemberPage";
 jest.mock("next/navigation", () => ({
     useRouter() {
         return {
@@ -15,15 +16,11 @@ jest.mock("next/navigation", () => ({
             prefetch: jest.fn()
         }
     },
-    usePathname() {
-        return {
-            replace: jest.fn(),
-            prefetch: jest.fn()
 
-        }
-    }
 }))
-test("Header Exists",async () => {
 
-    expect(Header).toBeDefined()
+test("Test member page", () => {
+    render(<MemberPage/>);
+
+    expect(screen.getByText("Welcome to the inside scoop!")).toBeInTheDocument();
 });

@@ -1,31 +1,29 @@
 /* Generated with the assistance of AI */
 
 .page-header {
-    width: 100%;
-    padding: 1rem;
-    background-color: #003591; /*True Blue*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem 2rem;
+
+    background: #003591;
     color: white;
-    text-align: center;
-    box-sizing: border-box;
 }
 
-/* Title Styling */
-.page-header h2 {
-    margin: 0;
-    font-size: 1.25rem;
+.header-btn {
+    background: white;
+    color: #003591;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 0.5rem 1rem;
+
     font-weight: 600;
-    letter-spacing: 0.5px;
+    cursor: pointer;
 }
 
-
-
-@media (min-width: 768px) {
-    .page-header {
-        padding: 1.5rem 2rem;
-        text-align: left;
-    }
-
-    .page-header h2 {
-        font-size: 1.75rem;
-    }
+.header-btn:hover {
+    background: #f1f1f1;
 }

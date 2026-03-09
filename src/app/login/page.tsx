@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import "./Login.css"
+import Link from "next/link";
 
 export default function LoginPage() {
     const router = useRouter()
@@ -55,6 +56,7 @@ export default function LoginPage() {
                 {error && <p className="login-error">{error}</p>}
 
                 <button type="submit">Sign in</button>
+                <Link style={{fontSize:"0.75rem",textAlign:"center"}} href="/register">No Account? Click here to register!</Link>
             </form>
         </div>
     )
