@@ -1,0 +1,77 @@
+/* Generated with the assistance of AI */
+
+/* MemberPage.css */
+
+/* Container */
+.member-page {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #111;
+}
+
+/* Navigation for subroutes */
+.scoop-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.scoop-nav a {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background-color: #e0e0e0;
+    color: #003591; /* IC Blue */
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.scoop-nav a:hover {
+    background-color: #003591;
+    color: white;
+}
+
+.scoop-nav a.active {
+    background-color: #003591;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Content area */
+.scoop-content {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Headings and text */
+.member-page h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.member-page p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .member-page {
+        padding: 0.5rem;
+    }
+
+    .scoop-nav a {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .member-page h2 {
+        font-size: 1.5rem;
+    }
+}
