@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header/Header";
+const Header = dynamic(() => import("../components/Header/Header"), { ssr: false });
 import Navigation from "@/components/Navigation/Navigation";
 import { cookies } from "next/headers"
 import { verifyToken } from "@/lib/auth"
+import dynamic from "next/dist/shared/lib/app-dynamic";
 
 export const metadata: Metadata = {
   title: "Create Next App",

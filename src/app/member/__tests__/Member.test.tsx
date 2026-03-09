@@ -7,7 +7,7 @@
 
 import { render, screen } from "@testing-library/react";
 
-import MemberPage from "@/app/member/page";
+import MemberPage from "@/app/member/MemberPage";
 jest.mock("next/navigation", () => ({
     useRouter() {
         return {

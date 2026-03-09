@@ -14,7 +14,7 @@ export default function Header() {
 
     useEffect(() => {
         async function checkAuth() {
-            const res = await fetch("/api/auth/me")
+            const res = await fetch("/api/auth/me",{cache: "no-cache"})
 
             if (res.ok) {
                 setLoggedIn(true)
@@ -26,7 +26,9 @@ export default function Header() {
 
     async function handleLogout() {
         await fetch("/api/auth/logout", {
-            method: "POST"
+            method: "POST",
+            cache: "no-cache",
+
         })
 
         setLoggedIn(false)
