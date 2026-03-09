@@ -1,0 +1,87 @@
+/* Styles generated with the assistance of AI */
+/* Page layout */
+
+.login-container {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100%;
+    padding: 2rem;
+
+}
+
+.login-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    width: 90%;
+    max-width: 1000px;
+
+    padding: 2.5rem;
+
+    background: white;
+    border-radius: 14px;
+
+    box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+}
+
+.login-card h1 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* inputs */
+
+.login-card input {
+    padding: 0.8rem;
+    font-size: 1rem;
+
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* button */
+
+.login-card button {
+    padding: 0.85rem;
+    border-radius: 8px;
+    border: none;
+
+    background: #003591;
+    color: white;
+
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.login-card button:hover {
+    background: #002a73;
+}
+
+/* error */
+
+.login-error {
+    color: #e63946;
+    text-align: center;
+}
+
+/* larger screens */
+
+@media (min-width: 900px) {
+
+    .login-card {
+        max-width: 650px;
+        padding: 3rem;
+    }
+
+}
+
+@media (min-width: 1400px) {
+
+    .login-card {
+        max-width: 750px;
+    }
+
+}
